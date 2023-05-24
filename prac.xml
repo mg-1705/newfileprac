@@ -1,0 +1,32 @@
+<row>
+    <panel>
+      <chart>
+        <search>
+          <query>index=jenkins_statistics event_tag=job_event type=completed |timechart  span="1w" sum(test_summary.total) as Total, sum(test_summary.passes) as Passed</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+      <chart>
+        <search>
+          <query>index=jenkins_statistics event_tag=job_event type=completed |timechart  span="1w" sum(test_summary.total) as Total, sum(test_summary.passes) as Passed| eval "Pass Rate"=100*(Passed/Total) |fields _time,"Pass Rate"
+          </query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+      <chart>
+        <search>
+          <query>index=jenkins_statistics event_tag=job_event type=completed |timechart  span="1w" avg(test_summary.duration) as "Average Run Time"</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.chart">area</option>
+      </chart>
+    </panel>
+  </row>
